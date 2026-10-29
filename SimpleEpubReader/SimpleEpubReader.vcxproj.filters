@@ -17,10 +17,16 @@
     <ClCompile Include="Helper\ZipHelper.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
+    <ClCompile Include="Helper\EpubHelper.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Helper\ZipHelper.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper\EpubHelper.h">
       <Filter>Helper</Filter>
     </ClInclude>
   </ItemGroup>

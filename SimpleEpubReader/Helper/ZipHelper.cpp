@@ -48,6 +48,16 @@ namespace Helper
 		return winrt::to_hstring(buffer);
 	}
 
+	winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> ZipHelper::ExtractFileTextAsync(winrt::hstring const& entryName)
+	{
+		winrt::apartment_context context; 
+		co_await winrt::resume_background(); 
+
+		winrt::hstring result = ExtractFileText(entryName); 
+		co_await context; 
+		co_return result; 
+	}
+
 	winrt::Windows::Storage::Streams::Buffer ZipHelper::ExtractFileData(winrt::hstring const& entryName)
 	{
 		using Buffer = winrt::Windows::Storage::Streams::Buffer;
@@ -76,6 +86,16 @@ namespace Helper
 
 		result.Length(bufferSize);
 		return result; 
+	}
+
+	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::Buffer> ZipHelper::ExtractFileDataAsync(winrt::hstring const& entryName)
+	{
+		winrt::apartment_context context; 
+		co_await winrt::resume_background(); 
+
+		winrt::Windows::Storage::Streams::Buffer buffer = ExtractFileData(entryName); 
+		co_await context; 
+		co_return buffer; 
 	}
 
 	bool ZipHelper::ExtractFiles(winrt::hstring const& folderPath)
@@ -118,5 +138,15 @@ namespace Helper
 		}
 
 		return errFilesCount == 0u; 
+	}
+
+	winrt::Windows::Foundation::IAsyncOperation<bool> ZipHelper::ExtractFilesAsync(winrt::hstring const& folderPath)
+	{
+		winrt::apartment_context context; 
+		co_await winrt::resume_background(); 
+
+		bool result = ExtractFiles(folderPath); 
+		co_await context; 
+		co_return result; 
 	}
 }
