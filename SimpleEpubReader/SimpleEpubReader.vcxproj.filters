@@ -14,9 +14,15 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>Packages</Filter>
     </ClCompile>
+    <ClCompile Include="Helper\ZipHelper.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Helper\ZipHelper.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -123,6 +129,9 @@
     <Filter Include="Packages">
       <UniqueIdentifier>{f5158c29-b8c9-4ee3-a815-abeca52a4abc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helper">
+      <UniqueIdentifier>{6f892783-169a-4dea-b939-5da7413f4e68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
@@ -138,5 +147,13 @@
     <None Include="packages.config">
       <Filter>Packages</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter">
+      <Filter>Packages</Filter>
+    </Natvis>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis">
+      <Filter>Packages</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

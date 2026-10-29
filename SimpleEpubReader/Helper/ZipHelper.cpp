@@ -1,0 +1,122 @@
+#include "pch.h"
+#include "ZipHelper.h"
+#include <string>
+#include <filesystem>
+
+namespace Helper
+{
+	ZipHelper::ZipHelper(winrt::hstring const& filePath)
+	{
+		std::string path = winrt::to_string(filePath);
+		m_isReady = mz_zip_reader_init_file(&m_zip, path.c_str(), 0) != 0;
+	}
+
+	ZipHelper::~ZipHelper()
+	{
+		if (m_isReady) {
+			mz_zip_reader_end(&m_zip);
+		}
+	}
+
+	bool ZipHelper::IsReady() const
+	{
+		return m_isReady;
+	}
+
+	winrt::hstring ZipHelper::ExtractFileText(winrt::hstring const& entryName)
+	{
+		if (!m_isReady || entryName.empty()) {
+			return winrt::hstring{};
+		}
+
+		std::string entryNameStr = winrt::to_string(entryName);
+		uint32_t index{};
+		if (!mz_zip_reader_locate_file_v2(&m_zip, entryNameStr.c_str(), nullptr, 0, &index)) {
+			return winrt::hstring{};
+		}
+
+		mz_zip_archive_file_stat st{};
+		if (!mz_zip_reader_file_stat(&m_zip, index, &st)) {
+			return winrt::hstring{};
+		}
+
+		std::string buffer(st.m_uncomp_size, '\0');
+		if (!mz_zip_reader_extract_to_mem(&m_zip, index, buffer.data(), buffer.size(), 0)) {
+			return winrt::hstring{};
+		}
+
+		return winrt::to_hstring(buffer);
+	}
+
+	winrt::Windows::Storage::Streams::Buffer ZipHelper::ExtractFileData(winrt::hstring const& entryName)
+	{
+		using Buffer = winrt::Windows::Storage::Streams::Buffer;
+
+		if (m_isReady || entryName.empty()) {
+			return Buffer{ nullptr };
+		}
+
+		std::string entryNameStr = winrt::to_string(entryName);
+		uint32_t index{};
+
+		if (!mz_zip_reader_locate_file_v2(&m_zip, entryNameStr.c_str(), nullptr, 0, &index)) {
+			return Buffer{ nullptr };
+		}
+
+		mz_zip_archive_file_stat st{};
+		if (!mz_zip_reader_file_stat(&m_zip, index, &st)) {
+			return Buffer{ nullptr };
+		}
+
+		uint32_t bufferSize = static_cast<uint32_t>(st.m_uncomp_size); 
+		Buffer result{ bufferSize };
+		if (!mz_zip_reader_extract_to_mem(&m_zip, index, result.data(), st.m_uncomp_size, 0)) {
+			return Buffer{ nullptr }; 
+		}
+
+		result.Length(bufferSize);
+		return result; 
+	}
+
+	bool ZipHelper::ExtractFiles(winrt::hstring const& folderPath)
+	{
+		if (!m_isReady || folderPath.empty()) {
+			return false; 
+		}
+
+		std::filesystem::path outputPath{ folderPath.c_str() }; 
+		if (!std::filesystem::exists(outputPath)) {
+			std::filesystem::create_directories(outputPath); 
+		}
+
+		mz_uint numFiles = mz_zip_reader_get_num_files(&m_zip); 
+		mz_uint errFilesCount = 0u; 
+		
+		for (mz_uint i = 0; i < numFiles; ++i) {
+			mz_zip_archive_file_stat st{}; 
+			if (!mz_zip_reader_file_stat(&m_zip, i, &st)) {
+				continue; 
+			}
+
+			winrt::hstring entryName = winrt::to_hstring(std::string{ st.m_filename });
+			std::filesystem::path itemPath = outputPath / entryName.c_str(); 
+			itemPath.make_preferred(); 
+
+			if (st.m_is_directory) {
+				std::filesystem::create_directories(itemPath); 
+				continue; 
+			}
+			
+			if (!std::filesystem::exists(itemPath.parent_path())) {
+				std::filesystem::create_directories(itemPath.parent_path()); 
+			}
+
+			std::string destFileName = itemPath.string(); 
+			if (!mz_zip_reader_extract_to_file(&m_zip, i, destFileName.c_str(), 0)) {
+				++errFilesCount; 
+			}
+		}
+
+		return errFilesCount == 0u; 
+	}
+}

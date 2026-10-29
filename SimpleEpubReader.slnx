@@ -4,7 +4,7 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="SimpleEpubReader/SimpleEpubReader.vcxproj">
+  <Project Path="SimpleEpubReader/SimpleEpubReader.vcxproj" Id="fc9171b9-839d-4e02-83f2-488b54690525">
     <Deploy />
   </Project>
 </Solution>
