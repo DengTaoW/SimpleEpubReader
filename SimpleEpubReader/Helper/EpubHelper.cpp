@@ -152,7 +152,7 @@ namespace Helper
 		if (!imageDataBuffer) {
 			co_return ImageSource{ nullptr }; 
 		}
-
+		
 		InMemoryRandomAccessStream stream; 
 		auto output = stream.GetOutputStreamAt(0); 
 		co_await output.WriteAsync(imageDataBuffer); 
