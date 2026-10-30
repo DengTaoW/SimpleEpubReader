@@ -4,10 +4,13 @@
     <ApplicationDefinition Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="MainWindow.xaml" />
-  </ItemGroup>
-  <ItemGroup>
     <Midl Include="MainWindow.idl" />
+    <Midl Include="Models\Models.idl">
+      <Filter>Models</Filter>
+    </Midl>
+    <Midl Include="Views.idl">
+      <Filter>Views</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -20,6 +23,9 @@
     <ClCompile Include="Helper\EpubHelper.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
+    <ClCompile Include="Helper\miniz\miniz.c">
+      <Filter>Helper\miniz</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -28,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="Helper\EpubHelper.h">
       <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper\miniz\miniz.h">
+      <Filter>Helper\miniz</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +147,15 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{6f892783-169a-4dea-b939-5da7413f4e68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{2d819d0f-d184-4477-a40d-f2aa60a888c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{aeea1c32-0977-48a1-bc65-3918258d6fff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helper\miniz">
+      <UniqueIdentifier>{2f5d50fe-fc10-4acb-9066-3d84b25d562d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
@@ -161,5 +179,10 @@
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis">
       <Filter>Packages</Filter>
     </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <Filter>Views</Filter>
+    </Page>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #pragma once
-#include <miniz/miniz.h>
+#include "miniz/miniz.h"
 
 namespace Helper
 {
@@ -35,8 +35,10 @@ namespace Helper
 		bool ExtractFiles(winrt::hstring const& folderPath); 
 		winrt::Windows::Foundation::IAsyncOperation<bool> ExtractFilesAsync(winrt::hstring const& folderPath); 
 
+		static std::vector<uint8_t> ReadBinaryFile(const std::string& filePath); 
+
 	private:
-		mz_zip_archive m_zip;
+		mz_zip_archive m_zip{};
 		bool m_isReady; 
 
 	};

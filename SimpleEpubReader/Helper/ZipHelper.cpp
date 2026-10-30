@@ -2,13 +2,14 @@
 #include "ZipHelper.h"
 #include <string>
 #include <filesystem>
+#include <fstream>
 
 namespace Helper
 {
 	ZipHelper::ZipHelper(winrt::hstring const& filePath)
 	{
-		std::string path = winrt::to_string(filePath);
-		m_isReady = mz_zip_reader_init_file(&m_zip, path.c_str(), 0) != 0;
+		std::string path = winrt::to_string(filePath); 
+		m_isReady = mz_zip_reader_init_file(&m_zip, path.c_str(), 0); 
 	}
 
 	ZipHelper::~ZipHelper()
@@ -62,7 +63,7 @@ namespace Helper
 	{
 		using Buffer = winrt::Windows::Storage::Streams::Buffer;
 
-		if (m_isReady || entryName.empty()) {
+		if (!m_isReady || entryName.empty()) {
 			return Buffer{ nullptr };
 		}
 
@@ -148,5 +149,24 @@ namespace Helper
 		bool result = ExtractFiles(folderPath); 
 		co_await context; 
 		co_return result; 
+	}
+
+	std::vector<uint8_t> ZipHelper::ReadBinaryFile(const std::string& filePath)
+	{
+		std::ifstream file{ filePath, std::ios::binary | std::ios::ate }; 
+
+		if (!file.is_open()) {
+			return {}; 
+		}
+
+		std::streamsize fileSize = file.tellg(); 
+		file.seekg(0, std::ios::beg); 
+
+		std::vector<uint8_t> buffer(fileSize); 
+		if (!file.read(reinterpret_cast<char*>(buffer.data()), fileSize)) {
+			return {}; 
+		}
+
+		return buffer; 
 	}
 }
