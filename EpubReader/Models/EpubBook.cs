@@ -100,6 +100,6 @@ internal partial class EpubBook(string filePath) : BindableBase
             CoverImageSource = await zip.ExtractImageSourceAsync(coverEntryName); 
         }
 
-        // Spine Items
+        // TODO: Spine Items
     }
 }
