@@ -19,10 +19,16 @@
                 <SymbolIcon Symbol="OpenFile" />
             </Button>
 
-            <TextBlock TextWrapping="WrapWholeWords">
-                <Run>META-INF/container.xml: </Run>
-                <Run x:Name="ContainerXml"></Run>
+            <TextBlock>
+                <Run>doc title: </Run>
+                <Run x:Name="DocTitleLabel"></Run>
             </TextBlock>
+
+            <TextBlock>
+                <Run>doc creator: </Run>
+                <Run x:Name="DocCreatorLabel"></Run>
+            </TextBlock>
+
 
             <Image x:Name="CoverImage" Height="300" HorizontalAlignment="Center"/>
 

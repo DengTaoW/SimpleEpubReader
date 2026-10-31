@@ -1,5 +1,6 @@
 using System;
 using EpubReader.Helper;
+using EpubReader.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.Storage.Pickers;
 
@@ -25,10 +26,12 @@ public sealed partial class MainWindow : Window
         var result = await picker.PickSingleFileAsync(); 
         if (result != null)
         {
-            using var zip = new ZipHelper(result.Path);
-            ContainerXml.Text = await zip.ExtractFileTextAsync("META-INF/container.xml"); ;
+            var book = new EpubBook(result.Path);
+            await book.InitializeAsync();
 
-            CoverImage.Source = await zip.ExtractImageSourceAsync("OEBPS/Images/cover00374.jpeg"); 
+            DocTitleLabel.Text = book.DocTitle;
+            DocCreatorLabel.Text = book.DocCreator;
+            CoverImage.Source = book.CoverImageSource; 
         }
        
     }

@@ -32,7 +32,8 @@ internal partial class ZipHelper: IDisposable
     /// 从 zip 内部获取指定 UTF-8 编码的文本文件的内容。
     /// </summary>
     /// <param name="entryName">文本文件的名称，该文件的编码格式应该是 UTF-8。</param>
-    /// <returns>文件的内容，如果失败返回空字符串。</returns>
+    /// <returns>文件的内容，如果失败抛出异常。</returns>
+    /// <exception cref="ArgumentException"></exception>
     public string ExtractFileText(string entryName)
     {
         var entry = _zip?.GetEntry(entryName); 
@@ -44,7 +45,7 @@ internal partial class ZipHelper: IDisposable
         }
         else
         {
-            return string.Empty; 
+            throw new ArgumentException($"entryName: '{entryName}' isn't valid.");
         }
     }
 
@@ -52,7 +53,8 @@ internal partial class ZipHelper: IDisposable
     /// 异步从 zip 内部获取指定 UTF-8 编码的文本文件的内容。
     /// </summary>
     /// <param name="entryName">文本文件的名称，该文件的编码格式应该是 UTF-8。</param>
-    /// <returns>文件的内容。如果失败，返回空字符串。</returns>
+    /// <returns>文件的内容。如果失败，抛出异常。</returns>
+    /// <exception cref="ArgumentException"></exception>
     public async Task<string> ExtractFileTextAsync(string entryName)
     {
         var entry = _zip?.GetEntry(entryName); 
@@ -65,7 +67,7 @@ internal partial class ZipHelper: IDisposable
         }
         else
         {
-            return string.Empty; 
+            throw new ArgumentException($"entryName: '{entryName}' isn't valid.");
         }
     }
 
@@ -87,8 +89,8 @@ internal partial class ZipHelper: IDisposable
         memoryStream.Position = 0;
 
         var bitmap = new BitmapImage(); 
-
         await bitmap.SetSourceAsync(memoryStream.AsRandomAccessStream());
+
         return bitmap; 
     }
 }
