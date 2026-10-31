@@ -1,0 +1,22 @@
+namespace SimpleEpubReader
+{
+
+	runtimeclass Chapter
+	{
+		Chapter(String content);
+		String Title{ get; };
+		String Text{ get; };
+	}
+
+	runtimeclass EpubBook
+	{
+		EpubBook(String filePath); 
+		Windows.Foundation.IAsyncAction InitializeAsync(); 
+		
+		String FilePath{ get; }; 
+		String DocTitle{ get;}; 
+		String DocCreator{ get; }; 
+		Microsoft.UI.Xaml.Media.ImageSource CoverImageSource{ get; };
+		Windows.Foundation.Collections.IObservableVector<Chapter> Chapters{ get; }; 
+	}
+}

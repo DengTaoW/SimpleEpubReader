@@ -40,4 +40,3 @@
 #include <winrt/Microsoft.Windows.Storage.Pickers.h>
 #include <winrt/Microsoft.UI.Text.h>
 #include <winrt/Windows.Graphics.h>
-

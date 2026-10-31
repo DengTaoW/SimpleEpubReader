@@ -4,7 +4,6 @@
     <ApplicationDefinition Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="MainWindow.idl" />
     <Midl Include="Models\Models.idl">
       <Filter>Models</Filter>
     </Midl>
@@ -26,6 +25,12 @@
     <ClCompile Include="Helper\miniz\miniz.c">
       <Filter>Helper\miniz</Filter>
     </ClCompile>
+    <ClCompile Include="Models\Chapter.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\EpubBook.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -37,6 +42,12 @@
     </ClInclude>
     <ClInclude Include="Helper\miniz\miniz.h">
       <Filter>Helper\miniz</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Chapter.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\EpubBook.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
