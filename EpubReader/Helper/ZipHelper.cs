@@ -8,6 +8,10 @@ using Windows.Storage.Streams;
 
 namespace EpubReader.Helper;
 
+/// <summary>
+/// 该类型用于提取 zip 压缩包内部的文件内容。
+/// 使用后，需要清理资源。 
+/// </summary>
 internal partial class ZipHelper: IDisposable
 {
     private readonly ZipArchive? _zip;
