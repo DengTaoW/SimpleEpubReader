@@ -13,7 +13,19 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
+    <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Button Click="OpenFile_ButtonClick">
+                <SymbolIcon Symbol="OpenFile" />
+            </Button>
 
-    </Grid>
+            <TextBlock TextWrapping="WrapWholeWords">
+                <Run>META-INF/container.xml: </Run>
+                <Run x:Name="ContainerXml"></Run>
+            </TextBlock>
+
+            <Image x:Name="CoverImage" Height="300" HorizontalAlignment="Center"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </Window>
