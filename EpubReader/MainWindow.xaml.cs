@@ -26,7 +26,9 @@ public sealed partial class MainWindow : Window
         if (result != null)
         {
             using var zip = new ZipHelper(result.Path);
-            ContainerXml.Text = await zip.ExtractFileTextAsync("META-INF/container.xml"); ; 
+            ContainerXml.Text = await zip.ExtractFileTextAsync("META-INF/container.xml"); ;
+
+            CoverImage.Source = await zip.ExtractImageSourceAsync("OEBPS/Images/cover00374.jpeg"); 
         }
        
     }

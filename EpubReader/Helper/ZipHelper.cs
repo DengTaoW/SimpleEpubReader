@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
 
 namespace EpubReader.Helper;
 
@@ -77,26 +76,19 @@ internal partial class ZipHelper: IDisposable
     /// <returns>如果成功，返回一个有效的 ImageSource 对象。如果失败返回 null.</returns>
     public async Task<ImageSource?> ExtractImageSourceAsync(string entryName)
     {
-        var entry = _zip?.GetEntry(entryName); 
-        
-        if (entry != null)
-        {
-            using var stream = entry.Open();
-            var bytes = new byte[stream.Length];
-            _ = await stream.ReadAsync(bytes);
+        var entry = _zip?.GetEntry(entryName);
 
-            using var buffer = new InMemoryRandomAccessStream();
-            var outputStream = buffer.GetOutputStreamAt(0u).AsStreamForWrite();
-            await outputStream.WriteAsync(bytes);
-            buffer.Seek(0u);
+        if (entry == null) return null;
 
-            BitmapImage bitmap = new();
-            await bitmap.SetSourceAsync(buffer);
-            return bitmap; 
-        }
-        else
-        {
-            return null; 
-        }
+        using var zipStream = entry.Open();
+        using var memoryStream = new MemoryStream();
+        await zipStream.CopyToAsync(memoryStream);
+        await memoryStream.FlushAsync(); 
+        memoryStream.Position = 0;
+
+        var bitmap = new BitmapImage(); 
+
+        await bitmap.SetSourceAsync(memoryStream.AsRandomAccessStream());
+        return bitmap; 
     }
 }
