@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="EpubReader.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:EpubReader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="MainWindow">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <TabView x:Name="MainTabView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabView.TabStripHeader>
+            <Grid x:Name="MainStripHeader" Background="Transparent" />
+        </TabView.TabStripHeader>
+        <TabView.TabStripFooter>
+            <Grid x:Name="MainStripFooter" Background="Transparent" /> 
+        </TabView.TabStripFooter>
+        <TabView.TabItems>
+            <TabViewItem Header="Books Page">
+                <TabViewItem.IconSource>
+                    <SymbolIconSource Symbol="Home" />
+                </TabViewItem.IconSource>
+                <local:BooksPage /> 
+            </TabViewItem>
+
+            <TabViewItem Header="Reader Page">
+                <TabViewItem.IconSource>
+                    <SymbolIconSource Symbol="Preview" /> 
+                </TabViewItem.IconSource>
+                <local:ReaderPage /> 
+            </TabViewItem>
+        </TabView.TabItems>
+    </TabView>
+</Window>

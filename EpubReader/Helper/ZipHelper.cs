@@ -13,8 +13,8 @@ namespace EpubReader.Helper;
 /// </summary>
 internal partial class ZipHelper: IDisposable
 {
-    private readonly ZipArchive? _zip;
-    private readonly FileStream? _fileStream; 
+    private readonly ZipArchive _zip;
+    private readonly FileStream _fileStream; 
 
     public ZipHelper(string filePath)
     {
@@ -24,8 +24,8 @@ internal partial class ZipHelper: IDisposable
     
     public void Dispose()
     {
-        _zip?.Dispose();
-        _fileStream?.Dispose(); 
+        _zip.Dispose();
+        _fileStream.Dispose(); 
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ internal partial class ZipHelper: IDisposable
     /// <exception cref="ArgumentException"></exception>
     public string ExtractFileText(string entryName)
     {
-        var entry = _zip?.GetEntry(entryName); 
+        var entry = _zip.GetEntry(entryName); 
         if (entry != null)
         {
             using var stream = entry.Open();
@@ -57,7 +57,7 @@ internal partial class ZipHelper: IDisposable
     /// <exception cref="ArgumentException"></exception>
     public async Task<string> ExtractFileTextAsync(string entryName)
     {
-        var entry = _zip?.GetEntry(entryName); 
+        var entry = _zip.GetEntry(entryName); 
         if (entry != null)
         {
             using var stream = entry.Open();
@@ -78,7 +78,7 @@ internal partial class ZipHelper: IDisposable
     /// <returns>如果成功，返回一个有效的 ImageSource 对象。如果失败返回 null.</returns>
     public async Task<ImageSource?> ExtractImageSourceAsync(string entryName)
     {
-        var entry = _zip?.GetEntry(entryName);
+        var entry = _zip.GetEntry(entryName);
 
         if (entry == null) return null;
 
@@ -92,5 +92,32 @@ internal partial class ZipHelper: IDisposable
         await bitmap.SetSourceAsync(memoryStream.AsRandomAccessStream());
 
         return bitmap; 
+    }
+
+    public void ExtractAllFiles(string outputFolder)
+    {
+        if (!Directory.Exists(outputFolder))
+        {
+            Directory.CreateDirectory(outputFolder); 
+        }
+
+        foreach (ZipArchiveEntry entry in _zip.Entries)
+        {
+            if (entry.IsEncrypted) continue;
+
+            string destFileName = Path.Combine(outputFolder, entry.FullName);
+            string parentDirectory = Path.GetDirectoryName(destFileName) ?? string.Empty; 
+            if (parentDirectory.Length > 0 && !Directory.Exists(parentDirectory))
+            {
+                Directory.CreateDirectory(parentDirectory); 
+            }
+
+            entry.ExtractToFile(destFileName); 
+        }
+    }
+
+    public async Task ExtractAllFilesAsync(string outputFolder)
+    {
+        await Task.Run(() => { ExtractAllFiles(outputFolder); }); 
     }
 }
