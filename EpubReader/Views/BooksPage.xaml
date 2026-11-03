@@ -8,7 +8,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock>Books Page</TextBlock>
-    </Grid>
+    <GridView HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <GridView.Header>
+            <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
+                <FontIcon Glyph="&#xE8F1;" FontSize="20" VerticalAlignment="Center"/>
+                <TextBlock Text="Books" FontSize="20" VerticalAlignment="Center"/>
+            </StackPanel>
+        </GridView.Header>
+        <GridView.Footer>
+            <StackPanel Spacing="12" Orientation="Horizontal" HorizontalAlignment="Stretch" FlowDirection="RightToLeft" Margin="12 0">
+                <Button>
+                    <FontIcon Glyph="&#xE710;"/>
+                </Button>
+            </StackPanel>
+        </GridView.Footer>
+    </GridView>
 </Page>
